@@ -26,9 +26,12 @@ definition(
 )
 
 preferences {
-	section("Turn on a switch for 15 minutes..."){
+    section("Which switch?") {
 		input "switch1", "capability.switch"
-	}
+    }
+    section("How many minutes?") {
+        input "minutes", "number", required: true, title: "How many minutes?", defaultValue: 15
+    }
 }
 
 def installed() {
@@ -44,7 +47,7 @@ def updated(settings) {
 
 def switchOnHandler(evt) {
 	switch1.on()
-	def delay = 60 * 1
+	def delay = 60 * settings.minutes
 	runIn(delay, turnOffSwitch)
 }
 
