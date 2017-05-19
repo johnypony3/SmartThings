@@ -26,26 +26,26 @@ definition(
 )
 
 preferences {
-    section("Which switch?") {
+    section("Which device?") {
 		    input "switch1", "capability.switch"
     }
-    section("Which other switch?") {
+    section("Which other device?") {
         input "switch2", "capability.switch"
     }
 }
 
 def installed() {
 	log.debug "Installed with settings: ${settings}"
-  subscribe_events()
+  initialize()
 }
 
 def updated(settings) {
 	log.debug "Updated with settings: ${settings}"
 	unsubscribe()
-  subscribe_events()
+  initialize()
 }
 
-def subscribe_events(){
+def initialize(){
   subscribe(switch1, "switch.on", switchOnHandler)
   subscribe(switch2, "switch.on", switchOnHandler)
   subscribe(switch1, "switch.off", switchOffHandler)
