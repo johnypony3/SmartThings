@@ -17,7 +17,7 @@
  */
 metadata {
 	// Automatically generated. Make future change here.
-	definition (name: "Iris Smart Plug", namespace: "blebson", author: "SmartThings") {
+	definition (name: "Iris Smart Plug", namespace: "johnypony3", author: "SmartThings") {
 		capability "Actuator"
 		capability "Switch"
 		capability "Power Meter"
@@ -120,6 +120,9 @@ def parse(String description) {
 
 	def finalResult = zigbee.getKnownDescription(description)
 
+	log.warn "bingo"
+	log.warn finalResult
+
 	//TODO: Remove this after getKnownDescription can parse it automatically
 	if (!finalResult && description!="updated")
 		finalResult = getPowerDescription(zigbee.parseDescriptionAsMap(description))
@@ -151,6 +154,8 @@ def parse(String description) {
 
 def calculateAndShowEnergy()
 {
+		log.warn device.currentValue("energy")
+
     def recentEvents = device.statesSince("power", new Date()-1, [max: 2]).collect {[value: it.value as float, date: it.date]}
     def deltaT = (recentEvents[0].date.getTime() - recentEvents[1].date.getTime()) // time since last "power" event in milliseconds
     deltaT = deltaT / 3600000 // convert to hours
